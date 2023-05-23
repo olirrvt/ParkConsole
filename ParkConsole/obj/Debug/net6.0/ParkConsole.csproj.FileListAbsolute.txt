@@ -1,0 +1,15 @@
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\bin\Debug\net6.0\ParkConsole.exe
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\bin\Debug\net6.0\ParkConsole.deps.json
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\bin\Debug\net6.0\ParkConsole.runtimeconfig.json
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\bin\Debug\net6.0\ParkConsole.dll
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\bin\Debug\net6.0\ParkConsole.pdb
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\obj\Debug\net6.0\ParkConsole.csproj.AssemblyReference.cache
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\obj\Debug\net6.0\ParkConsole.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\obj\Debug\net6.0\ParkConsole.AssemblyInfoInputs.cache
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\obj\Debug\net6.0\ParkConsole.AssemblyInfo.cs
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\obj\Debug\net6.0\ParkConsole.csproj.CoreCompileInputs.cache
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\obj\Debug\net6.0\ParkConsole.dll
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\obj\Debug\net6.0\refint\ParkConsole.dll
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\obj\Debug\net6.0\ParkConsole.pdb
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\obj\Debug\net6.0\ParkConsole.genruntimeconfig.cache
+C:\Users\Taylor\Desktop\ParkConsole\ParkConsole\obj\Debug\net6.0\ref\ParkConsole.dll
