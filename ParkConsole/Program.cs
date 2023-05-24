@@ -16,19 +16,24 @@
             while (continuar)
             {
 
-                Console.WriteLine($"Data de hoje: {dateTime}");
+                Console.WriteLine($"Data de hoje: {dateTime.ToString("dd/MM/yyyy")}");
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("--------------------------------");
                 Console.WriteLine("SEJA BEM-VINDO(A) AO PROGRAMA!");
                 Console.WriteLine("--------------------------------");
+                Console.ResetColor();
                 Console.WriteLine(" ");
 
-                Console.WriteLine("O que você deseja registrar?");
+                Console.WriteLine("Escolha uma das opções abaixo:");
                 Console.WriteLine(" ");
 
                 Console.WriteLine("1- Entrada de um Veículo");
                 Console.WriteLine("2- Saída de um Veículo");   
                 Console.WriteLine("3- Ver veículos da garagem");
-                Console.WriteLine("4- Sair do programa");         
+                Console.ForegroundColor= ConsoleColor.Red;
+                Console.WriteLine("4- Sair do programa");             
+                Console.ResetColor();
+
                 Console.WriteLine(" ");
 
                 opcao = int.Parse(Console.ReadLine());
@@ -50,7 +55,7 @@
                     case 3:
                         // Listar Carros
                         Console.Clear();
-                        Console.WriteLine("Listar Veículos");
+                        CRUD.listarCarros(listaVeiculos, caminhoEntrada);
                         break;
 
                     case 4:
@@ -59,8 +64,12 @@
                         break;
 
                     default:
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Entrada inválida, tente outra opção!");
-                        break;
+                        Console.WriteLine(" ");
+                        Console.ResetColor();
+                    break;
                 }
 
             }

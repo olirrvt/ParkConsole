@@ -22,7 +22,7 @@ namespace ParkConsole
                 } while (leitor.EndOfStream);
 
                 leitor.Close();
-            } 
+            }
             catch (Exception)
             {
                 Console.WriteLine("Ocorreu um erro no arquivo!");
@@ -33,7 +33,7 @@ namespace ParkConsole
             StreamWriter escritor = new StreamWriter(caminhoArquivo, append: true);
 
             foreach (var veiculo in listaEntrada)
-            { 
+            {
                 escritor.WriteLine($"{veiculo.PlacaVeiculo};{veiculo.DataEntrada};{veiculo.HoraEntrada}");
                 escritor.Flush();
             }
@@ -126,9 +126,3 @@ namespace ParkConsole
         }
     }
 }
-
-//  lerArquivoVeiculosEntrada();
-//  gravarArquivoVeiculosEntrada();
-
-//  lerArquivoVeiculosSaida();
-//  gravarArquivoVeiculosSaida();

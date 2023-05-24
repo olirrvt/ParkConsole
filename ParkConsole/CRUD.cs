@@ -95,10 +95,14 @@ namespace ParkConsole
                 Console.WriteLine("Deseja cadastrar mais um carro? (S/N)");
                 resposta = Console.ReadLine().ToUpper();
 
-                continuar = resposta == "S";
+                if (resposta != "S")
+                {
+                    Console.Clear();
+                    continuar = false;
+                }
 
             } while (continuar);
-  
+
         }
         public static void registrarSaida(List<Veiculo> listaVeiculo, string caminhoEntrada, string caminhoSaida)
         {
@@ -119,15 +123,7 @@ namespace ParkConsole
                 Console.Write("Digite a placa do veículo que irá sair: ");
                 placaVeiculo = Console.ReadLine().ToUpper();
 
-                foreach(var item in listaVeiculo)
-                {
-                    Console.WriteLine(item.PlacaVeiculo);
-                    Console.WriteLine(item.DataEntrada);
-                    Console.WriteLine(item.HoraEntrada);
-                }
-
-                Veiculo veiculo = listaVeiculo.Find(v =>
-                v.PlacaVeiculo.Equals(placaVeiculo, StringComparison.OrdinalIgnoreCase));
+                Veiculo veiculo = listaVeiculo.Find(v => v.PlacaVeiculo.Equals(placaVeiculo, StringComparison.OrdinalIgnoreCase));
 
                 if (veiculo != null)
                 {
@@ -136,8 +132,10 @@ namespace ParkConsole
 
                     CRUD.NumeroDeVagas++;
                     listaVeiculo.Remove(veiculo);
+
                     veiculo.RegistrarSaida(horaSaida);
 
+                    Persistencia.atualizarEntradaArquivo(veiculo,caminhoEntrada);
                     Persistencia.atualizarSaidaArquivo(veiculo, caminhoSaida);
 
                     Console.Clear();
@@ -153,12 +151,69 @@ namespace ParkConsole
                     Console.ResetColor();
                 }
 
+
+                Console.WriteLine(" ");
                 Console.WriteLine("Deseja registrar mais uma saída?");
+
                 resposta = Console.ReadLine().ToUpper();
 
-                continuar = resposta == "S";
+                if(resposta != "S")
+                {
+                    Console.Clear();
+                    continuar = false;
+                }
 
             } while (continuar);
         }
+
+        public static void listarCarros(List<Veiculo> listaVeiculo, string caminhoEntrada)
+        {
+            bool parar = false;
+            string opcao;
+
+            List<Veiculo> listaVeiculoEntrada = Persistencia.popularArquivoEntrada(caminhoEntrada);
+
+            do
+            {
+                listaVeiculo = listaVeiculoEntrada;
+
+                Console.Clear();
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Lista de Carros no Estacionamento");
+                Console.ResetColor();
+
+                Console.WriteLine(" ");
+
+                foreach (var veiculo in listaVeiculo)
+                {
+                    Console.WriteLine("--------------------------------------------");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("Placa do Veículo: ");
+                    Console.ResetColor();
+                    Console.WriteLine(veiculo.PlacaVeiculo);
+
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("Hora de entrada: ");
+                    Console.ResetColor();
+                    Console.WriteLine(veiculo.HoraEntrada);
+
+                    Console.WriteLine("--------------------------------------------");
+                }
+
+                Console.WriteLine(" ");
+                Console.WriteLine("Deseja sair da listagem?");
+                Console.WriteLine(" ");
+                opcao = Console.ReadLine().ToUpper();
+
+                if (opcao == "S")
+                {
+                    Console.Clear();
+                    parar = true;
+                }
+
+            } while (!parar);
+        }
+
     }
 }
