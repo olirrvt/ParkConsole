@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,35 +9,98 @@ namespace ParkConsole
 {
     internal class CRUD
     {
-        public static void cadastrar(List<Veiculo> listaVeiculo, string caminhoArquivo)
+        public static int NumeroDeVagas { get; set; } = 50;
+        
+        public static bool VerificarHorarioEntrada(string horaEntrada)
         {
-            string placaVeiculo;
-            string horaEntrada;
-            Veiculo veiculo;
-
-            Console.Write("Digite a placa do veículo: ");
-            placaVeiculo = Console.ReadLine().ToUpper();
-
-            Console.Write("Digite a hora da entrada do veículo: ");
-            horaEntrada = Console.ReadLine();
-
-            veiculo = new Veiculo(placaVeiculo, horaEntrada);
-
-            if (!listaVeiculo.Contains(veiculo))
+            if (DateTime.TryParseExact(horaEntrada, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime hora))
             {
-                listaVeiculo.Add(veiculo);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Veículo Cadastrado na Garagem!");
-                Console.ResetColor();
+                DateTime horaMinima = DateTime.ParseExact("07:00", "HH:mm", CultureInfo.InvariantCulture);
+                DateTime horaMaxima = DateTime.ParseExact("20:00", "HH:mm", CultureInfo.InvariantCulture);
+
+                if (hora >= horaMinima && hora <= horaMaxima)
+                {
+                    return true;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Horário de entrada inválido.");
+                    Console.WriteLine("Os carros só podem ser cadastrados de 07:00 às 20:00.");
+                    Console.ResetColor();
+                }
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("O veículo já está na garagem!");
+                Console.WriteLine("Formato de hora inválido. Use o formato HH:mm.");
                 Console.ResetColor();
             }
 
-            Persistencia.atualizarEntradaArquivo(veiculo, caminhoArquivo);
+            return false;
         }
+        public static void cadastrar(List<Veiculo> listaVeiculo, string caminhoArquivo)
+        {
+            string placaVeiculo;
+            string horaEntrada;
+            string resposta;
+            bool continuar = true;
+            Veiculo veiculo;
+
+            do
+            {
+                if (CRUD.NumeroDeVagas != 0)
+                {
+                    Console.Write("Digite a placa do veículo: ");
+                    placaVeiculo = Console.ReadLine().ToUpper();
+
+                    do
+                    {
+                        Console.Write("Digite a hora da entrada do veículo (formato HH:mm): ");
+                        horaEntrada = Console.ReadLine();
+                    } while (!VerificarHorarioEntrada(horaEntrada));
+
+                    veiculo = new Veiculo(placaVeiculo, horaEntrada);
+
+                    if (!listaVeiculo.Contains(veiculo))
+                    {
+                        Console.Clear();
+
+                        CRUD.NumeroDeVagas--;
+                        listaVeiculo.Add(veiculo);
+
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("Veículo Cadastrado na Garagem!");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("O veículo já está na garagem!");
+                        Console.ResetColor();
+                    }
+
+                    Persistencia.atualizarEntradaArquivo(veiculo, caminhoArquivo);
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Garagem cheia, tente novamente mais tarde!");
+                    Console.ResetColor();
+                    break;
+                }
+
+                Console.WriteLine("Deseja cadastrar mais um carro? (S/N)");
+                resposta = Console.ReadLine().ToUpper();
+
+                continuar = resposta == "S";
+
+            } while (continuar);
+  
+        }
+
     }
 }

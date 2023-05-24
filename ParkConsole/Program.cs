@@ -6,7 +6,6 @@
         {
             string caminhoEntrada = "C:/Users/Taylor/Desktop/ParkConsole/VeiculosEntradas.dat";
             string caminhoSaida = "C:/Users/Taylor/Desktop/ParkConsole/VeiculosSaida.dat";
-            int numeroDeVagas = 50;
             int opcao = 0;
             bool continuar = true;
 
