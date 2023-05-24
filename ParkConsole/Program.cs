@@ -27,41 +27,40 @@
 
                 Console.WriteLine("1- Entrada de um Veículo");
                 Console.WriteLine("2- Saída de um Veículo");   
-                Console.WriteLine("3- Ver veículos da garagem");   
+                Console.WriteLine("3- Ver veículos da garagem");
                 Console.WriteLine("4- Sair do programa");         
                 Console.WriteLine(" ");
 
                 opcao = int.Parse(Console.ReadLine());
 
-                switch(opcao)
+                switch (opcao)
                 {
                     case 1:
                         // Entrada de um veículo
                         Console.Clear();
-                        Console.WriteLine("Entrada Veículo");
                         CRUD.cadastrar(listaVeiculos, caminhoEntrada);
-                    break;
+                        break;
 
                     case 2:
                         // Saída de um veículo
                         Console.Clear();
-                        Console.WriteLine("Saída Veículo");
-                    break;
+                        CRUD.registrarSaida(listaVeiculos, caminhoEntrada, caminhoSaida);
+                        break;
 
                     case 3:
                         // Listar Carros
                         Console.Clear();
                         Console.WriteLine("Listar Veículos");
-                    break;
+                        break;
 
                     case 4:
                         // Saindo do programa
                         continuar = false;
-                    break;
+                        break;
 
                     default:
                         Console.WriteLine("Entrada inválida, tente outra opção!");
-                    break;
+                        break;
                 }
 
             }

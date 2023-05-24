@@ -10,7 +10,6 @@ namespace ParkConsole
     internal class CRUD
     {
         public static int NumeroDeVagas { get; set; } = 50;
-        
         public static bool VerificarHorarioEntrada(string horaEntrada)
         {
             if (DateTime.TryParseExact(horaEntrada, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime hora))
@@ -101,6 +100,65 @@ namespace ParkConsole
             } while (continuar);
   
         }
+        public static void registrarSaida(List<Veiculo> listaVeiculo, string caminhoEntrada, string caminhoSaida)
+        {
+            string placaVeiculo;
+            string horaSaida;
+            string resposta;
+            bool continuar = true;
 
+            List<Veiculo> listaVeiculoEntrada = Persistencia.popularArquivoEntrada(caminhoEntrada);
+
+            do
+            {
+
+                Console.Clear();
+
+                listaVeiculo = listaVeiculoEntrada;
+
+                Console.Write("Digite a placa do veículo que irá sair: ");
+                placaVeiculo = Console.ReadLine().ToUpper();
+
+                foreach(var item in listaVeiculo)
+                {
+                    Console.WriteLine(item.PlacaVeiculo);
+                    Console.WriteLine(item.DataEntrada);
+                    Console.WriteLine(item.HoraEntrada);
+                }
+
+                Veiculo veiculo = listaVeiculo.Find(v =>
+                v.PlacaVeiculo.Equals(placaVeiculo, StringComparison.OrdinalIgnoreCase));
+
+                if (veiculo != null)
+                {
+                    Console.Write("Digite a hora da saída do veículo: ");
+                    horaSaida = Console.ReadLine();
+
+                    CRUD.NumeroDeVagas++;
+                    listaVeiculo.Remove(veiculo);
+                    veiculo.RegistrarSaida(horaSaida);
+
+                    Persistencia.atualizarSaidaArquivo(veiculo, caminhoSaida);
+
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Saída registrada com sucesso!");
+                    Console.ResetColor();
+                }
+                else
+                {
+
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Veículo não encontrado no estacionamento");
+                    Console.ResetColor();
+                }
+
+                Console.WriteLine("Deseja registrar mais uma saída?");
+                resposta = Console.ReadLine().ToUpper();
+
+                continuar = resposta == "S";
+
+            } while (continuar);
+        }
     }
 }

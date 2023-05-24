@@ -22,8 +22,8 @@ namespace ParkConsole
             DateTime dateTime = DateTime.Now;
 
             PlacaVeiculo = placaVeiculo;
-            DataEntrada = dateTime.ToString("dd/MM/yyyy");
             HoraEntrada = horaEntrada;
+            DataEntrada = dateTime.ToString("dd/MM/yyyy");
         }
 
         public void RegistrarSaida(string horaSaida)
@@ -34,24 +34,52 @@ namespace ParkConsole
 
         private void CalculaTempoPermanencia()
         {
+            Veiculo veiculo;
+            veiculo = new Veiculo();
+
             TimeSpan horaEntrada = TimeSpan.Parse(HoraEntrada);
             TimeSpan horaSaida = TimeSpan.Parse(HoraSaida);
 
             TimeSpan intervalo = horaSaida - horaEntrada;
             TempoPermanencia = intervalo.TotalMinutes;
-            CalculaValorCobrado();
+            CalculaValorCobrado(horaSaida);
         }
 
-        private void CalculaValorCobrado()
+        private void CalculaValorCobrado(TimeSpan horaSaida)
         {
-            double valorMinutos = 0.50;
-            ValorCobrado = TempoPermanencia * valorMinutos;
+            const double valorPorHora = 5.0;
+
+            if (TempoPermanencia > 60.0)
+            {
+                int horasPermanencia = (int)Math.Ceiling(TempoPermanencia / 60.0);
+                TimeSpan horaLimite = new TimeSpan(20, 1, 0);
+
+                if (horaSaida > horaLimite)
+                {
+                    horasPermanencia += 1;
+                }
+
+                ValorCobrado = valorPorHora * horasPermanencia;
+            }
+            else
+            {
+                ValorCobrado = 0.0;
+            }
         }
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
-            return obj is Veiculo veiculo &&
-                PlacaVeiculo == veiculo.PlacaVeiculo;
+            if (obj is Veiculo veiculo)
+            {
+                return PlacaVeiculo == veiculo.PlacaVeiculo;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return PlacaVeiculo.GetHashCode();
         }
     }
 }

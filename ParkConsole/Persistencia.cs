@@ -42,12 +42,13 @@ namespace ParkConsole
         public static void atualizarEntradaArquivo(Veiculo veiculo, string nomeArquivo)
         {
             StreamWriter escritor = new StreamWriter(nomeArquivo, append: true);
-            escritor.WriteLine($"{veiculo.PlacaVeiculo};{veiculo.DataEntrada};{veiculo.HoraEntrada}");
+            escritor.WriteLine($"{veiculo.PlacaVeiculo};{veiculo.HoraEntrada};{veiculo.DataEntrada}");
 
             escritor.Close();
         }
-        public static void popularArquivoEntrada(string nomeArquivo, List<Veiculo> lista)
+        public static List<Veiculo> popularArquivoEntrada(string nomeArquivo)
         {
+            List<Veiculo> lista = new List<Veiculo>();
             StreamReader leitor = new StreamReader(nomeArquivo, Encoding.UTF8);
 
             string[] vetorLinha;
@@ -62,6 +63,8 @@ namespace ParkConsole
 
             } while (!leitor.EndOfStream);
             leitor.Close();
+
+            return lista;
         }
 
         // Saída dos Veículos 
@@ -89,7 +92,7 @@ namespace ParkConsole
 
             foreach (var veiculo in listaSaida)
             {
-                escritor.WriteLine($"{veiculo.PlacaVeiculo};{veiculo.HoraEntrada};{veiculo.TempoPermanencia};{veiculo.ValorCobrado}");
+                escritor.WriteLine($"{veiculo.PlacaVeiculo};{veiculo.DataEntrada};{veiculo.HoraEntrada};{veiculo.TempoPermanencia};{veiculo.ValorCobrado}");
                 escritor.Flush();
             }
             escritor.Close();
@@ -97,12 +100,13 @@ namespace ParkConsole
         public static void atualizarSaidaArquivo(Veiculo veiculo, string nomeArquivo)
         {
             StreamWriter escritor = new StreamWriter(nomeArquivo, append: true);
-            escritor.WriteLine($"{veiculo.PlacaVeiculo};{veiculo.HoraEntrada};{veiculo.TempoPermanencia};{veiculo.ValorCobrado}");
+            escritor.WriteLine($"{veiculo.PlacaVeiculo};{veiculo.DataEntrada};{veiculo.HoraEntrada};{veiculo.TempoPermanencia};{veiculo.ValorCobrado}");
 
             escritor.Close();
         }
-        public static void popularArquivoSaida(string nomeArquivo, List<Veiculo> lista)
+        public static List<Veiculo> popularArquivoSaida(string nomeArquivo)
         {
+            List<Veiculo> lista = new List<Veiculo>();
             StreamReader leitor = new StreamReader(nomeArquivo, Encoding.UTF8);
 
             string[] vetorLinha;
@@ -117,6 +121,8 @@ namespace ParkConsole
 
             } while (!leitor.EndOfStream);
             leitor.Close();
+
+            return lista;
         }
     }
 }
