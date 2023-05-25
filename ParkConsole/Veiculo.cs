@@ -32,7 +32,7 @@ namespace ParkConsole
             CalculaTempoPermanencia();
         }
 
-        private void CalculaTempoPermanencia()
+        public void CalculaTempoPermanencia()
         {
             Veiculo veiculo;
             veiculo = new Veiculo();
@@ -45,7 +45,7 @@ namespace ParkConsole
             CalculaValorCobrado(horaSaida);
         }
 
-        private void CalculaValorCobrado(TimeSpan horaSaida)
+        public void CalculaValorCobrado(TimeSpan horaSaida)
         {
             const double valorPorHora = 5.0;
 

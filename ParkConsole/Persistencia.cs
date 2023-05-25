@@ -10,7 +10,6 @@ namespace ParkConsole
     internal class Persistencia
     {
         // Entrada dos Veículos
-
         public static void lerArquivoVeiculoEntrada(string caminhoArquivo)
         {
             try
@@ -30,7 +29,7 @@ namespace ParkConsole
         }
         public static void gravarArquivoVeiculosEntrada(List<Veiculo> listaEntrada, string caminhoArquivo)
         {
-            StreamWriter escritor = new StreamWriter(caminhoArquivo, append: true);
+            StreamWriter escritor = new StreamWriter(caminhoArquivo, append: false);
 
             foreach (var veiculo in listaEntrada)
             {
@@ -68,7 +67,6 @@ namespace ParkConsole
         }
 
         // Saída dos Veículos 
-
         public static void lerArquivoVeiculosSaida(string caminhoArquivo)
         {
             try
@@ -88,7 +86,7 @@ namespace ParkConsole
         }
         public static void gravarArquivoVeiculosSaida(List<Veiculo> listaSaida, string caminhoArquivo)
         {
-            StreamWriter escritor = new StreamWriter(caminhoArquivo, append: true);
+            StreamWriter escritor = new StreamWriter(caminhoArquivo, append: false);
 
             foreach (var veiculo in listaSaida)
             {

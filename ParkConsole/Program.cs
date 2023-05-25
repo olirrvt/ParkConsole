@@ -9,7 +9,7 @@
             int opcao = 0;
             bool continuar = true;
 
-            List<Veiculo> listaVeiculos = new List<Veiculo>(); 
+            List<Veiculo> listaVeiculos = new List<Veiculo>();
             DateTime dateTime = DateTime.Now;
 
 
@@ -28,10 +28,10 @@
                 Console.WriteLine(" ");
 
                 Console.WriteLine("1- Entrada de um Veículo");
-                Console.WriteLine("2- Saída de um Veículo");   
+                Console.WriteLine("2- Saída de um Veículo");
                 Console.WriteLine("3- Ver veículos da garagem");
-                Console.ForegroundColor= ConsoleColor.Red;
-                Console.WriteLine("4- Sair do programa");             
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("4- Sair do programa");
                 Console.ResetColor();
 
                 Console.WriteLine(" ");
@@ -49,13 +49,13 @@
                     case 2:
                         // Saída de um veículo
                         Console.Clear();
-                        CRUD.registrarSaida(listaVeiculos, caminhoEntrada, caminhoSaida);
+                        CRUD.registrarSaida(caminhoEntrada, caminhoSaida);
                         break;
 
                     case 3:
                         // Listar Carros
                         Console.Clear();
-                        CRUD.listarCarros(listaVeiculos, caminhoEntrada);
+                        CRUD.listarCarros(caminhoEntrada);
                         break;
 
                     case 4:
@@ -69,11 +69,10 @@
                         Console.WriteLine("Entrada inválida, tente outra opção!");
                         Console.WriteLine(" ");
                         Console.ResetColor();
-                    break;
+                        break;
                 }
 
             }
-            
         }
     }
 }

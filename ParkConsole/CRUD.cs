@@ -80,8 +80,6 @@ namespace ParkConsole
                         Console.WriteLine("O veículo já está na garagem!");
                         Console.ResetColor();
                     }
-
-                    Persistencia.atualizarEntradaArquivo(veiculo, caminhoArquivo);
                 }
                 else
                 {
@@ -91,6 +89,8 @@ namespace ParkConsole
                     Console.ResetColor();
                     break;
                 }
+
+                Persistencia.atualizarEntradaArquivo(veiculo, caminhoArquivo);
 
                 Console.WriteLine("Deseja cadastrar mais um carro? (S/N)");
                 resposta = Console.ReadLine().ToUpper();
@@ -104,24 +104,22 @@ namespace ParkConsole
             } while (continuar);
 
         }
-        public static void registrarSaida(List<Veiculo> listaVeiculo, string caminhoEntrada, string caminhoSaida)
+        public static void registrarSaida(string caminhoEntrada, string caminhoSaida)
         {
             string placaVeiculo;
             string horaSaida;
             string resposta;
             bool continuar = true;
-
-            List<Veiculo> listaVeiculoEntrada = Persistencia.popularArquivoEntrada(caminhoEntrada);
+            bool remove = false;
 
             do
             {
-
                 Console.Clear();
-
-                listaVeiculo = listaVeiculoEntrada;
 
                 Console.Write("Digite a placa do veículo que irá sair: ");
                 placaVeiculo = Console.ReadLine().ToUpper();
+
+                List<Veiculo> listaVeiculo = Persistencia.popularArquivoEntrada(caminhoEntrada);
 
                 Veiculo veiculo = listaVeiculo.Find(v => v.PlacaVeiculo.Equals(placaVeiculo, StringComparison.OrdinalIgnoreCase));
 
@@ -130,18 +128,38 @@ namespace ParkConsole
                     Console.Write("Digite a hora da saída do veículo: ");
                     horaSaida = Console.ReadLine();
 
-                    CRUD.NumeroDeVagas++;
-                    listaVeiculo.Remove(veiculo);
+                    for (int i = listaVeiculo.Count - 1; i >= 0; i--)
+                    {
+                        if (placaVeiculo == listaVeiculo[i].PlacaVeiculo)
+                        {
+                            listaVeiculo.RemoveAt(i);
+                            remove = true;
+                        }
+                    }
 
-                    veiculo.RegistrarSaida(horaSaida);
+                    if (remove)
+                    {
+                        Persistencia.gravarArquivoVeiculosEntrada(listaVeiculo, caminhoEntrada);
 
-                    Persistencia.atualizarEntradaArquivo(veiculo,caminhoEntrada);
-                    Persistencia.atualizarSaidaArquivo(veiculo, caminhoSaida);
+                        CRUD.NumeroDeVagas++;
+                        veiculo.RegistrarSaida(horaSaida);
+                        veiculo.CalculaTempoPermanencia();
 
-                    Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Saída registrada com sucesso!");
-                    Console.ResetColor();
+                        Persistencia.atualizarSaidaArquivo(veiculo, caminhoSaida);
+
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("Saída registrada com sucesso!");
+                        Console.ResetColor();
+                    }
+
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Ocorreu um erro!");
+                        Console.ResetColor();
+                    }
+
                 }
                 else
                 {
@@ -151,13 +169,12 @@ namespace ParkConsole
                     Console.ResetColor();
                 }
 
-
                 Console.WriteLine(" ");
                 Console.WriteLine("Deseja registrar mais uma saída?");
 
                 resposta = Console.ReadLine().ToUpper();
 
-                if(resposta != "S")
+                if (resposta != "S")
                 {
                     Console.Clear();
                     continuar = false;
@@ -165,18 +182,13 @@ namespace ParkConsole
 
             } while (continuar);
         }
-
-        public static void listarCarros(List<Veiculo> listaVeiculo, string caminhoEntrada)
+        public static void listarCarros(string caminhoEntrada)
         {
             bool parar = false;
             string opcao;
 
-            List<Veiculo> listaVeiculoEntrada = Persistencia.popularArquivoEntrada(caminhoEntrada);
-
             do
             {
-                listaVeiculo = listaVeiculoEntrada;
-
                 Console.Clear();
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
@@ -185,25 +197,24 @@ namespace ParkConsole
 
                 Console.WriteLine(" ");
 
-                foreach (var veiculo in listaVeiculo)
+                List<Veiculo> listaVeiculo = Persistencia.popularArquivoEntrada(caminhoEntrada);
+
+                foreach (var v in listaVeiculo)
                 {
                     Console.WriteLine("--------------------------------------------");
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.Write("Placa do Veículo: ");
                     Console.ResetColor();
-                    Console.WriteLine(veiculo.PlacaVeiculo);
+                    Console.WriteLine(v.PlacaVeiculo);
 
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.Write("Hora de entrada: ");
                     Console.ResetColor();
-                    Console.WriteLine(veiculo.HoraEntrada);
-
-                    Console.WriteLine("--------------------------------------------");
+                    Console.WriteLine(v.HoraEntrada);
                 }
 
                 Console.WriteLine(" ");
-                Console.WriteLine("Deseja sair da listagem?");
-                Console.WriteLine(" ");
+                Console.WriteLine("Deseja sair da listagem? (S/N)");
                 opcao = Console.ReadLine().ToUpper();
 
                 if (opcao == "S")
@@ -214,6 +225,5 @@ namespace ParkConsole
 
             } while (!parar);
         }
-
     }
 }
